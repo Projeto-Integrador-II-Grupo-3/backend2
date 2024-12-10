@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.projetointegradorfit.model.Usuario;
+import com.generation.projetointegradorfit.model.UsuarioLogin;
 import com.generation.projetointegradorfit.repository.UsuarioRepository;
+import com.generation.projetointegradorfit.service.UsuarioService;
 
 import jakarta.validation.Valid;
 @RestController
@@ -56,13 +58,13 @@ private UsuarioRepository usuarioRepository;
    }
 
 
-   @PutMapping
+   /*@PutMapping
    public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario) {
        return usuarioRepository.findById(usuario.getId())
                .map(resposta -> ResponseEntity.status(HttpStatus.OK)
                        .body(usuarioRepository.save(usuario)))
                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-   }
+   }*/
 
 
    @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -77,6 +79,51 @@ private UsuarioRepository usuarioRepository;
 
        usuarioRepository.deleteById(id);
    }
+   //Login do usuario
+ //-----------------------------------------------------------------------------------------------------------------
+	
+   @PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> autenticarUsuario(@RequestBody Optional<UsuarioLogin> usuarioLogin){
+		
+		return usuarioService.autenticarUsuario(usuarioLogin)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
+   
 
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Usuario> postUsuario(@RequestBody @Valid Usuario usuario) {
+
+		return usuarioService.cadastrarUsuario(usuario)
+			.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+
+	}
+
+	@PutMapping("/atualizar")
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+		
+		return usuarioService.atualizarUsuario(usuario)
+			.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+	}
+   
+   //Metodo para imc
+//-----------------------------------------------------------------------------------------------------------------
+   @Autowired
+   private UsuarioService usuarioService;
+    
+   @PutMapping("/{id}/calcular-imc")
+   public ResponseEntity<Usuario> calcularIMC(@PathVariable Long id) {
+       usuarioService.calcularEAtualizarIMC(id);
+       Usuario usuario = usuarioService.getUsuarioComIMC(id);
+       return ResponseEntity.ok(usuario);
+   }
+
+   @GetMapping("/{id}/imc")
+   public ResponseEntity<Usuario> obterUsuarioComIMC(@PathVariable Long id) {
+       Usuario usuario = usuarioService.getUsuarioComIMC(id);
+       return ResponseEntity.ok(usuario);
+   }
 
 }

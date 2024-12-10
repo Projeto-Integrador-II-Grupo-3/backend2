@@ -51,20 +51,25 @@ public class Usuario {
    
     private String tipo;
 
-    @NotBlank(message = "O Atributo PESO é Obrigatório!")
+   
     private Double peso;
 
 
-    @NotBlank(message = "O Atributo ALTURA é Obrigatório!")
+    
     private Double altura;
 
 
     private Double imc;
-
     
+    
+        
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("usuario")
     private List<Exercicio> exercicio;
+    
+    
+    
+    
 
 
     public Long getId() {
@@ -137,12 +142,12 @@ public class Usuario {
     }
 
 
-    public double getImc() {
+    public Double getImc() {
         return imc;
     }
 
 
-    public void setImc(double imc) {
+    public void setImc(Double imc) {
         this.imc = imc;
     }
 

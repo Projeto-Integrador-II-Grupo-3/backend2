@@ -106,34 +106,45 @@ public class UsuarioService {
 	}
 	
 	//Calculando IMC
-	/*public Double calcularIMC() {
-        if (peso == null  altura == null  altura == 0) {
-            return null; // Retorna null caso os dados sejam inválidos.
+	//--------------------------------------------------------------------------------------------------------------
+	public void calcularEAtualizarIMC(Long usuarioId) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
+
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            if (usuario.getPeso() != null && usuario.getAltura() != null && usuario.getAltura() > 0) {
+                Double imc = usuario.getPeso() / (usuario.getAltura() * usuario.getAltura());
+                usuario.setImc(imc);
+                usuarioRepository.save(usuario);
+            } else {
+                throw new IllegalArgumentException("Peso e altura devem ser informados e altura deve ser maior que zero");
+            }
+        } else {
+            throw new IllegalArgumentException("Usuário não encontrado");
         }
-        return peso / (altura * altura); // Calcula o IMC
     }
 
-    // Método para classificar o IMC
-    public String classificarIMC() {
-        Double imc = calcularIMC();
-        if (imc == null) {
-            return "Dados inválidos para calcular o IMC.";
-        }
+    public Usuario getUsuarioComIMC(Long usuarioId) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
 
-        if (imc < 18.5) {
-            return "Abaixo do peso";
-        } else if (imc < 24.9) {
-            return "Peso normal";
-        } else if (imc < 29.9) {
-            return "Sobrepeso";
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            if (usuario.getImc() == null && usuario.getPeso() != null && usuario.getAltura() != null && usuario.getAltura() > 0) {
+                Double imc = usuario.getPeso() / (usuario.getAltura() * usuario.getAltura());
+                usuario.setImc(imc);
+                usuarioRepository.save(usuario);
+            }
+            return usuario;
         } else {
-            return "Obesidade";
+            throw new IllegalArgumentException("Usuário não encontrado");
         }
-    }*/
+    }
+	
+    }
 		
 		
 		
-	}
+	
 	
 	
 
