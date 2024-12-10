@@ -20,15 +20,17 @@ public class Exercicio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@NotBlank
 	@Size(min = 5, max = 100)
 	private String nome;
+
 	@NotBlank
 	@Size(min = 5, max = 100)
 	private String grupoMuscular;
-	@NotBlank
+
 	private Integer repeticoes;
-	@NotBlank
+
 	private Integer series;
 	
 	 @ManyToOne //(fetch = FetchType.LAZY, mappedBy = "exercicio", cascade = CascadeType.REMOVE)
