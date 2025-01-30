@@ -1,4 +1,4 @@
-# GenFitness | Backend do Projeto Integrador
+# FIT TECH | Backend do Projeto Integrador
 
 Este repositório contém o backend do 2º Desafio do Projeto Integrador do Bootcamp de Desenvolvimento Fullstack da Generation Brasil.
 O objetivo do projeto é fornecer uma API robusta para gerenciar os dados e funcionalidades da aplicação, implementando boas práticas de desenvolvimento e segurança.
